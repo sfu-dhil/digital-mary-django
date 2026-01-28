@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}
+
+{% block main_classes %}{% endblock %}
+
+{% comment %} hide breadcrumbs {% endcomment %}
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+    <section class="home-main full">
+        <div class="home-main__container">
+            <div class="container">
+                <div class="home-header">
+                    <h1>
+                        <div>The</div>
+                        <div>Digital Mary</div>
+                        <div>Project</div>
+                    </h1>
+                </div>
+                <div class="home-desc">
+                    <p>The Digital Mary Project is a Mariological resource dedicated to the collection and curation of
+                        the material culture related to Virgin Mary. Our primary objective is to build a comprehensive
+                        open-access database that brings all of the artistic productions, artefacts, and built
+                        landscapes related to the early Cult of the Virgin in the Eastern Mediterranean together into
+                        an easily-searchable digital platform.</p>
+                </div>
+            </div>
+
+        </div>
+        <i class="scroll-down-btn bi bi-chevron-down"></i>
+    </section>
+
+
+    <section class="home-search">
+        <div class="container">
+            <h2>Explore the Archive</h2>
+            <div class="my-5">
+                {% include 'forms/item_search.html' with form=item_search_form show_help=False show_filters=False %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

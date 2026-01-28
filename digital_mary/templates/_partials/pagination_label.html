@@ -1,0 +1,10 @@
+<small>
+    {% if page_obj.paginator.count <= 1 %}
+        {{ page_obj.paginator.count }}
+    {% elif page_obj.start_index == page_obj.end_index %}
+        {{ page_obj.start_index }} of {{ page_obj.paginator.count }}
+    {% else %}
+        {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }}
+    {% endif %}
+    {{ request.GET.q|yesno:'found,total'}}
+</small>

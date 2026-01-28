@@ -1,0 +1,11 @@
+You're receiving this email because you are listed as a recipient of item challenge emails for {{ site.name }}.
+
+A new item challenge has been made for: {{ request.scheme }}://{{ request.get_host }}{% url 'item' pk=object.item.pk %}
+
+Challenge Record: {{ request.scheme }}://{{ request.get_host }}{% url 'admin:digital_mary_challenges_challenge_change' object.pk %}
+Fullname: {{ object.fullname }}
+Email: {{ object.email }}
+Message: {{ object.message }}
+
+
+The {{ site.name }} team

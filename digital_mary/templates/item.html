@@ -1,0 +1,224 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}
+
+{% block title %}{{ object.name }}{% endblock %}
+
+{% block article_classes %}{% if object.get_public_image_count == 0 and object.remote_images.all|length == 0 %}imageless{% endif %}{% endblock %}
+
+{% block content %}
+    <section class="header">
+        <div class="item-header item-header__full">
+            <h1>{{ object.name }}</h1>
+            <div>
+                {% if object.categories.all|length > 0 %}
+                    <h2>
+                        {% for category in object.categories.all %}
+                            <span title="{{ category.description|default:''|striptags }}">{{ category.label }}</span>{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </h2>
+                {% endif %}
+                {% if object.cultures.all|length > 0 or object.display_date %}
+                    <h3>
+                        {% spaceless %}
+                            {% for culture in object.cultures.all %}
+                                <span title="{{ culture.description|default:''|striptags }}">{{ culture.label }}</span>{% if not forloop.last or object.display_date %}, {% endif %}
+                            {% endfor %}
+                            {% if object.display_date %}
+                                {{ object.display_date }}
+                            {% endif %}
+                        {% endspaceless %}
+                    </h3>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <section class="description">
+        <div class="item-description">
+            {{ object.description|safe }}
+        </div>
+    </section>
+
+    {% if object.get_public_images|length > 0 or object.remote_images.all|length > 0 %}
+        <section class="images">
+            <h2 class="visually-hidden">Images</h2>
+            <div class="sticky">
+                <div class="img-content">
+                    {% if object.get_public_images|length > 0 %}
+                        {% include '_partials/carousel.html' with images=object.get_public_images %}
+                    {% else %}
+                        <details class="details item-details-remoteImg" open="open">
+                            <summary>Remote Images <span class="icon"><i class="bi bi-chevron-right"></i></span></summary>
+                            <div class="item-details__content">
+                                <div>
+                                    {% for remote_image in object.remote_images.all %}
+                                        <div class="remote-image-content">
+                                            <a href="{{ remote_image.url }}" target="_blank">
+                                                <div>
+                                                    <div><strong>{{ remote_image.name }}</strong></div>
+                                                    <div>
+                                                        {% if 'britishmuseum.org' in remote_image.url %}
+                                                            British Museum
+                                                        {% else %}
+                                                            {{ remote_image.url }}
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </details>
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+        {# Div for image viewer #}
+        <div id="dm-viewer-container">
+        </div>
+    {% endif %}
+
+
+
+    <section class="metadata">
+        <div class="item-details-list">
+
+            <details class="details item-details-main" open="open">
+                <summary>Item Information <span class="icon"><i class="bi bi-chevron-right"></i></span></summary>
+                <div class="item-details-list">
+                    {% include '_partials/item-detail-terms.html' with label='Categories' property_name='category' term_objects=object.categories.all %}
+                    {% include '_partials/item-detail-term.html' with label='Provenance' property_name='location' term_object=object.provenance note=object.provenance_other %}
+                    {% include '_partials/item-detail-term.html' with label='Find Spot' property_name='location' term_object=object.findspot note=object.findspot_other %}
+                    {% include '_partials/item-detail-terms.html' with label='Materials' property_name='material' term_objects=object.materials.all %}
+                    {% include '_partials/item-detail-terms.html' with label='Techniques' property_name='technique' term_objects=object.techniques.all %}
+                    {% include '_partials/item-detail.html' with label='Dimensions' property_name='dimensions' content=object.dimensions %}
+                    {% include '_partials/item-detail.html' with label='Location' property_name='location' content=object.location %}
+                    {% include '_partials/item-detail-terms.html' with label='Culture' property_name='culture' term_objects=object.cultures.all %}
+                    {% include '_partials/item-detail.html' with label='Period' property_name='display' content=object.get_display_periods %}
+                    {% include '_partials/item-detail-terms.html' with label='Subjects' property_name='subject' term_objects=object.subjects.all %}
+                </div>
+            </details>
+
+            {% comment %}
+                NOTE: We test for both inscription and translatedInscription
+                since there are many instances of inscriptions that just say "None".
+            {% endcomment %}
+
+            {% if object.inscription and object.translated_inscription_en %}
+                <details class="details item-details__inscription">
+                    <summary>Inscription <span class="icon"><i class="bi bi-chevron-right"></i></span></summary>
+                    <div class="item-inscription">
+                        {% comment %} First column is information {% endcomment %}
+                        <div class="item-inscription__body">
+                            <div>
+                                <div class="item-inscription__header">
+                                    <h4>Original</h4>
+                                    {# TODO: Refactor this fairly significantly using the details macro #}
+                                    {% if object.inscription_style or object.languages.all|length > 0 %}
+                                        <ul class="list-inline">
+                                            {% if object.languages.all|length > 0 %}
+                                                <li class="item-inscription-language" data-caption="Language">
+                                                    {% for language in object.languages.all %}
+                                                        <a href="{% url 'items' %}?language={{ language.pk }}" title="{{ language.description|default:''|striptags }}">{{ language.label }}</a>
+                                                        {% if not forloop.last %}, {% endif %}
+                                                    {% endfor %}
+                                                </li>
+                                            {% endif %}
+                                            {% if object.inscription_style %}
+                                                <li class="item-inscription-style" data-caption="Style">
+                                                    <a href="{% url 'items' %}?inscription_style={{ object.inscription_style.pk }}"title="{{ object.inscription_style.description|default:''|striptags }}">{{ object.inscription_style.label }}</a>
+                                                </li>
+                                            {% endif %}
+                                        </ul>
+                                    {% endif %}
+                                </div>
+                                <div class="item-inscription__content {% for language in object.languages.all %}{{ language.label|escape|lower }}{% endfor %}">
+                                    {{ object.inscription|safe }}
+                                </div>
+                            </div>
+                            {% if object.translated_inscription_en %}
+                                <div>
+                                    <div class="item-inscription__header">
+                                        <h4>Translation</h4>
+                                    </div>
+                                    <div class="item-inscription__content">
+                                        {{ object.translated_inscription_en|safe }}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </details>
+            {% endif %}
+
+            {% if object.interpretations %}
+                <details class="details item-details__interpretations">
+                    <summary>Interpretations <span class="icon"><i class="bi bi-chevron-right"></i></span></summary>
+                    {{ object.interpretations|default:''|safe }}
+                </details>
+            {% endif %}
+
+            <details class="details item-details__references">
+                <summary>References <span class="icon"><i class="bi bi-chevron-right"></i></span></summary>
+                {{ object.bibliographic_references|default:''|safe }}
+            </details>
+
+            {% comment %}
+                Now hack together a citation block
+            {% endcomment %}
+
+            <details class="details item-details__editHistory">
+                <summary>Credits and Citations <span class="icon"><i class="bi bi-chevron-right"></i></span></summary>
+                <div class="item-details-list">
+                    <div class="item-details item-details__citation">
+                        <h2 class="item-details__header">Cite this Page</h2>
+                        <div class="item-details__content">
+                            <p>
+                                {{ object.get_citation_authors|join:', ' }}
+                                &ldquo;{{ object.name }}.&rdquo;
+                                The Digital Mary Project. Simon Fraser University, {{ object.updated|date:'Y' }}. {{ request.build_absolute_uri }}.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="item-details item-details__contributions">
+                        <h2 class="item-details__header">Contributors</h2>
+                        <div class="item-details__content">
+                            {% for contribution in object.contributions.all %}
+                                {{ contribution.person.fullname }} - {{ contribution.get_roles }}
+                                {% for marc_relator in contribution.marc_relators %}
+                                    {{ marc_relator.label }}{% if not forloop.last %}, {% endif %}
+                                {% endfor %}<br />
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="item-details item-details__itemUpdated">
+                        <h2 class="item-details__header">Updated</h2>
+                        <div class="item-details__content">
+                            <p>{{ object.updated|date:'F j, Y' }}</p>
+                        </div>
+                    </div>
+
+                    <div class="item-details item-details__itemCreated">
+                        <h2 class="item-details__header">Created</h2>
+                        <div class="item-details__content">
+                            <p>{{ object.created|date:'F j, Y' }}</p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <details class="details item-challenge" {% if form.errors %}open="open"{% endif %}>
+                <summary>Challenge this record <span class="icon"><i class="bi bi-chevron-right"></i></span></summary>
+                {% include 'forms/challenge.html' with form=form %}
+            </details>
+        </div>
+    </section>
+{% endblock %}

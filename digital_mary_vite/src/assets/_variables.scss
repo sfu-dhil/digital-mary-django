@@ -1,0 +1,117 @@
+$heading-font: 'Spectral';
+$body-font: "Source Sans 3";
+$greek-font: "Athena Ruby", "Source Sans 3", sans-serif;
+$ms-base: 1rem;
+$ms-ratio: $phi;
+$modscale-start: 3;
+$dm-gold: #C0B283;
+$dm-light-gold: #E7DED1;
+$dm-light-grey-gold: #FDFBF8;
+$dm-grey: #F4F4F4;
+$dm-black: #212125;
+$dm-beige: #DCD0C0;
+$dm-dark-grey: #373737;
+$dm-off-white: #fbfbfb;
+$nav-height: rem(50px);
+$dm-white: #ffffff;
+$dm-img-height: 350;
+$dm-img-width: 450;
+$dm-nav-background-color: $dm-light-grey-gold;
+$base-text-color: $dm-black;
+
+$body-background: $dm-white;
+/*Hamburger stuff */
+$hamburger-types: (collapse);
+$hamburger-layer-height: $nav-height / 13;
+$hamburger-layer-spacing: $nav-height/ 8;
+$hamburger-layer-color: rgba-to-rgb(rgba($dm-black, 0.6), $dm-nav-background-color);
+
+
+@mixin dm-link{
+  text-decoration:none!important;
+  border-bottom-style: solid;
+  border-bottom-width: ms(-3);
+  border-bottom-color: rgba($dm-gold, 0.5);
+  transition: border-bottom-color 0.2s ease-in-out;
+  color:inherit;
+  &:hover{
+    color:inherit;
+    border-bottom-color:rgba($dm-gold, 0.8)
+  }
+}
+
+@mixin dm-removeLink{
+  text-decoration:none!important;
+  border-bottom:none;
+  transition:none;
+  color:inherit;
+  &:hover{
+    color:inherit;
+    border-bottom:none;
+  }
+}
+
+@mixin dm-linkButton($bg-color: $dm-beige){
+  margin-bottom:ms(-2);
+  margin-right: ms(-1);
+  margin-top:0;
+  color: inherit;
+  border: none;
+  border: 1px solid $bg-color;
+  border-radius: 2px;
+  background: color.scale($bg-color, $lightness: 85%);
+  transition: background 0.2s ease(in-out-quad);
+  &:hover {
+    background: color.scale($bg-color, $lightness: 50%);
+  }
+}
+
+// We generate the font module, but there are special fonts we need for handling variant languages
+
+@font-face {
+  font-family: 'Athena Ruby';
+  src: url('../fonts/athenaruby_b018-webfont.eot');
+  src: url('../fonts/athenaruby_b018-webfont.eot?#iefix') format('embedded-opentype'),
+  url('../fonts/athenaruby_b018-webfont.woff2') format('woff2'),
+  url('../fonts/athenaruby_b018-webfont.woff') format('woff'),
+  url('../fonts/athenaruby_b018-webfont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  // I think this works: just use a subset of the font and get a particular unicode range.
+  unicode-range: U+005B-0060, U+007B-007E, U+00A0, U+00B7, U+02C1, U+02CA, U+02CB, U+02D9, U+0300-03E1, U+1F00-1FFE, U+200C,
+  U+200D, U+2180, U+25CC, U+2627, U+2E09, U+2E0A, U+2E23, U+E100-E823, U+10182, U+10184;
+}
+
+@keyframes gesture-left{
+      0% {transform: translateX(0)}
+      50% {transform: translateX(5px)}
+      100% {transform:translateX(0)}
+}
+
+@keyframes fade-in{
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity:1;
+  }
+}
+
+@keyframes bounce-downwards{
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  33%{
+    transform:translate3d(0, 10px, 0);
+  }
+
+  66%{
+    transform: translate3d(0,0,0);
+  }
+
+  100%{
+    transform:translate3d(0,0,0);
+  }
+}
+
+

@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+{% load static %}
+
+{% block styles %}
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}
+
+{% block title %}All Items{% endblock %}
+
+{% block content %}
+    {% include 'forms/item_search.html' with form=item_search_form show_help=True show_filters=True %}
+    <div class="mt-1 mb-3">
+        {% include "_partials/pagination_label.html" with page_obj=page_obj %}
+    </div>
+
+    {% if object_list|length > 0 %}
+        <div class="gallery {{ request.GET.page|yesno:',animate'}}">
+            {% for object in object_list %}
+                <div class="item">
+                    <a class="item-card" href="{% url 'item' pk=object.pk %}">
+                        <div class="item-img-wrapper">
+                            {% with image=object.get_first_public_image %}
+                                {% if image and image.image and image.thumbnail and image.thumbnail.url %}
+                                    <img src="{{ image.thumbnail.url }}" alt="{{ image.description|default:'Not available'|striptags|escape }}" loading="lazy" />
+                                {% else %}
+                                    <img class="placeholder no-img" src="{% static 'images/no-img.svg' %}" alt="No image available" loading="lazy" />
+                                {% endif %}
+                            {% endwith %}
+                        </div>
+                        <div class="item-content-wrapper">
+                            <div class="item-content">
+                                <h2 class="item-content-header">{{ object.name }}</h2>
+                                <div class="item-content-desc">
+                                    {{ object.get_display_date }}
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if page_obj.paginator.num_pages > 1 %}
+        {% bootstrap_pagination page_obj url=request.get_full_path justify_content='center' pages_to_show=4 %}
+    {% endif %}
+{% endblock %}

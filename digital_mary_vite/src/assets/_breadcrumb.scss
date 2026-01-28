@@ -1,0 +1,193 @@
+
+/* DEFAULTS */
+$breadcrumb-font-size: 12px !default;
+$breadcrumb-color: black!default;
+$breadcrumb-box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.05) !default;
+$breadcrumb-font-weight: 300!default;
+$breadcrumb-arrow-color: #EFEFEF!default;
+$breadcrumb-arrow-width: 3px;
+$breadcrumb-background-color: white!default;
+$breadcrumb-current-background: #CCC!default;
+$breadcrumb-current-color: rgba(black, 0.8)!default;
+$breadcrumb-current-max-text-width: 25ch!default;
+$breadcrumb-current-font-style: italic!default;
+$breadcrumb-hover-color: #bca7a7!default;
+
+/*Breadcrumb stuff */
+$breadcrumb-arrow-color: $dm-light-gold;
+$breadcrumb-hover-color:$dm-light-gold;
+$breadcrumb-arrow-width: 2px;
+$breadcrumb-current-background: $dm-grey;
+
+@mixin dm-breadcrumb(){
+    .breadcrumbs {
+        list-style: none;
+        overflow:hidden;
+        padding: 0;
+        display:flex;
+        width: -webkit-max-content;
+        width: -moz-max-content;
+        width: max-content;
+        font-weight: $breadcrumb-font-weight;
+        font-size: $breadcrumb-font-size;
+        box-shadow: $breadcrumb-box-shadow;
+        @content;
+    }
+
+    .breadcrumbs li > * {
+        text-decoration: none;
+        position: relative;
+        display: flex;
+        height:100%;
+        align-items:center;
+        color:$breadcrumb-color;
+    }
+
+    /*
+    * Now create the various triangles
+    * that will overlap; this is the
+    * common stuff between the two
+    * triangles
+    */
+    .breadcrumbs li > *:before,
+    .breadcrumbs li > *:after{
+        content: " ";
+        display: block;
+        width: 0;
+        height: 0;
+        border-top: 50px solid transparent;
+        border-bottom: 50px solid transparent;
+        position: absolute;
+        top: 50%;
+        margin-top: -50px;
+    }
+    .breadcrumbs li > *,
+    .breadcrumbs li > *:after,
+    .breadcrumbs li > *:before {
+        transition: all 0.2s ease-in-out;
+    }
+
+    .breadcrumbs li:last-child{
+        background:$breadcrumb-current-background;
+    }
+
+    .breadcrumbs li:not(:last-child) > *:hover{
+        background:$breadcrumb-hover-color;
+    }
+
+    .breadcrumbs .current{
+        text-overflow:ellipsis;
+        white-space:nowrap;
+        overflow-x:hidden;
+
+        font-style:$breadcrumb-current-font-style;
+        max-width:$breadcrumb-current-max-text-width;
+        li > &{
+            color:$breadcrumb-current-color;
+        }
+    }
+
+    .breadcrumbs li:last-child > *:after,
+    .breadcrumbs li:last-child > *:before{
+        content: unset;
+    }
+
+    /* Media query to reset the size of things */
+    @media (max-width:780px){
+        .current{
+            max-width:$breadcrumb-current-max-text-width;
+        }
+    }
+
+    .breadcrumbs a {
+      border-bottom: none;
+    }
+    html:not([dir="rtl"]) {
+        .breadcrumbs li > * {
+            padding:0.5em 0 0.5em 4em;
+        }
+        .breadcrumbs li > *:before,
+        .breadcrumbs li > *:after{
+            left: 100%;
+            border-left-width: 30px;
+            border-left-style:solid;
+        }
+
+        .breadcrumbs li:not(:last-child) > *:before {
+            /*And make sure the zindex is 1*/
+            z-index: 1;
+            /*This should be the colour
+            you want the arrow*/
+            border-left-color: $breadcrumb-arrow-color;
+            /*The margin left here dictates the width of the arrow*/
+            margin-left: $breadcrumb-arrow-width;
+        }
+
+        .breadcrumbs li > *:after {
+            /*Z index should be 2 to overlap*/
+            z-index: 2;
+            /*BORDER LEFT should be the
+            same as the background colour*/
+            border-left-color: $breadcrumb-background-color;
+        }
+
+        /*Now small, project specific
+        paddings etc*/
+        .breadcrumbs li:first-child > * {
+            padding: 0 0 0 1rem;
+        }
+        .breadcrumbs li:not(:last-child) > *:hover{
+            &:after,
+            &:before{
+                border-left-color:$breadcrumb-hover-color;
+            }
+        }
+        .breadcrumbs .current{
+            margin: 0 1rem 0 0;
+        }
+    }
+    html[dir="rtl"] {
+        .breadcrumbs li > * {
+            padding:0.5em 4em 0.5em 0;
+        }
+        .breadcrumbs li > *:before,
+        .breadcrumbs li > *:after{
+            right: 100%;
+            border-right-width: 30px;
+            border-right-style:solid;
+        }
+
+        .breadcrumbs li:not(:last-child) > *:before {
+            /*And make sure the zindex is 1*/
+            z-index: 1;
+            /*This should be the colour
+            you want the arrow*/
+            border-right-color: $breadcrumb-arrow-color;
+            /*The margin left here dictates the width of the arrow*/
+            margin-right: $breadcrumb-arrow-width;
+        }
+
+        .breadcrumbs li > *:after {
+            /*Z index should be 2 to overlap*/
+            z-index: 2;
+            /*BORDER LEFT should be the
+            same as the background colour*/
+            border-right-color: $breadcrumb-background-color;
+        }
+
+        /*Now small, project specific
+        paddings etc*/
+        .breadcrumbs li:first-child > * {
+            padding: 0 1rem 0 0;
+        }
+        .breadcrumbs li:not(:last-child) > *:hover{
+            &:after,
+            &:before{
+                border-right-color:$breadcrumb-hover-color;
+            }
+        }
+        .breadcrumbs .current{
+            margin: 0 0 0 1rem;
+        }
+    }
+}

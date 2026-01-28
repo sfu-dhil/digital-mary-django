@@ -1,0 +1,21 @@
+{% load django_bootstrap5 %}
+<form method="get" action="{% url 'items' %}" role="search">
+    <div class="input-group pb-2">
+        {% if show_help %}
+            {% include "_partials/search_help_btn.html" %}
+        {% endif %}
+        {{ form.q }}
+        <button class="btn btn-primary" type="submit">
+            <i class="bi bi-search" aria-hidden="true"></i> Search
+        </button>
+    </div>
+    {% if show_filters %}
+        <div class="input-group">
+            {% for field in form %}
+                {% if field.name != 'q' %}
+                    {% bootstrap_field field show_label=False wrapper_class='flex-grow-1 pb-2' %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+</form>

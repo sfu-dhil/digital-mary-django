@@ -1,0 +1,22 @@
+{% with has_content=term_objects|length has_note=note|default:''|striptags %}
+    <div class="item-details item-details__{{ property_name }} hasContent-{{ has_content|yesno:'true,false' }} hasNote-{{ has_note|yesno:'true,false' }}">
+        <h2 class="item-details__header item-details__{{ property_name }}">{{ label }}</h2>
+        <div class="item-details__content item-details__{{ property_name }}">
+            {% if has_content %}
+                <ul>
+                    {% for term_object in term_objects %}
+                        <li><a href="{% url 'items' %}?{{ property_name }}={{ term_object.pk }}" title="{{ term_object.description|default:''|striptags }}">{{ term_object.label }}</a></li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            {% if has_note %}
+                <div class="item-details__note item-details__{{ property_name }}">
+                    {{ note|safe }}
+                </div>
+            {% endif %}
+            {% if not has_content and not has_note %}
+                -
+            {% endif %}
+        </div>
+    </div>
+{% endwith %}

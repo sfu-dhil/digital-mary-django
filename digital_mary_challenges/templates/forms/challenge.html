@@ -1,0 +1,13 @@
+{% load django_bootstrap5 %}
+<form method="post" class="form">
+    {% csrf_token %}
+
+    {% bootstrap_form form layout='horizontal' label_class='mt-3' field_class='mt-3' %}
+
+    <div class="row mb-3">
+        <div class="col-sm-2 mt-3"></div>
+        <div class="col-sm-10">
+            {% bootstrap_button button_type="submit" content="Submit" %}
+        </div>
+    </div>
+</form>

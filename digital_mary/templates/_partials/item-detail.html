@@ -1,0 +1,12 @@
+{% with has_content=content|default:''|striptags %}
+    <div class="item-details item-details__{{ property_name }} hasContent-{{ has_content|yesno:'true,false' }} hasNote-false">
+        <h2 class="item-details__header item-details__{{ property_name }}">{{ label }}</h2>
+        <div class="item-details__content item-details__{{ property_name }}">
+            {% if has_content %}
+                {{ content|safe }}
+            {% else %}
+                -
+            {% endif %}
+        </div>
+    </div>
+{% endwith %}

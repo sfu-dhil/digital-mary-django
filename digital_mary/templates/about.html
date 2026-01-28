@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load solo_tags %}
+
+{% block styles %}
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}
+
+{% block title %}About{% endblock %}
+
+{% block main_classes %}{% endblock %}
+
+{% block content %}
+    {% get_solo 'digital_mary_config.AboutPage' as about_page %}
+    <section class="container about-header pb-5">
+        <h1 class="fw-bolder mb-2 text-center">The Digital Mary Project</h1>
+    </section>
+    <section class="container about-desc pb-5">
+        {{ about_page.content|safe }}
+    </section>
+    <section class="bg-light py-5 about-team">
+        <h2 class="fw-bolder text-center pb-5">Team Members</h2>
+
+        <div class="container">
+            <div class="row gx-5 row-cols-1 row-cols-sm-2 row-cols-xl-4">
+                {% for team_member in about_page.team_members.all %}
+                    <div class="col mb-5 mb-5 mb-xl-0 text-center">
+                        <img src="{{ team_member.thumbnail.url }}" alt="{{ team_member.name }}" class="rounded-circle mb-4 px-4" style="max-width: 150px; max-height: 150px" />
+                        <h5 class="fw-bolder">{{ team_member.name }}</h5>
+                        <div class="fst-italic text-muted">
+                            {{ team_member.profile|safe }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

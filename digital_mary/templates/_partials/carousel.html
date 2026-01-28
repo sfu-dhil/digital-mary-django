@@ -1,0 +1,66 @@
+{% comment %} Create the dots if we need to, which are filled by Slider.js {% endcomment %}
+{% if images|length > 1 %}
+    <ul class=" dots">
+    </ul>
+{% endif %}
+
+{% comment %} Create the actual slider {% endcomment %}
+<div class="image-slider-container">
+    {% comment %} If the slider has multiple images, create the next/previous buttons {% endcomment %}
+    {% if images|length > 1 %}
+        <button aria-label="Previous" class="slider-btn slider-btn-prev">
+            <i class="bi bi-chevron-left"></i>
+        </button>
+        <button aria-label="Next" class="slider-btn slider-btn-next">
+            <i class="bi bi-chevron-right"></i>
+        </button>
+    {% endif %}
+
+    {% comment %} Create the actual slider {% endcomment %}
+    <div class="image-slider">
+        {% for image in images %}
+            <div id="img-{{ forloop.counter0 }}" class="item {% if forloop.first %}active{% endif %}">
+                {% comment %} Top bit {% endcomment %}
+                <div class="img-container">
+                    <a href="{{ image.image.url }}"
+                        data-date="{{ image.created|date:'%Y-%m-%d %H:%M:%S' }}"
+                        data-img="{{ image.image.url }}"
+                    >
+                        <img src="{{ image.thumbnail.url }}" alt="{{ image.description|default:'Not available'|striptags|escape }}" loading="auto" />
+                    </a>
+                </div>
+
+                {% comment %} Info box at the bottom {% endcomment %}
+                <div class="img-info">
+                    <div class="img-toolbar">
+                        {% comment %} Tools for interacting with the image {% endcomment %}
+                        <div class="img-toolbar__tools">
+                            <a class="img-tool-info"><i class="bi bi-info-circle"></i></a>
+                            <a class="img-tool-zoom"><i class="bi bi-arrows-fullscreen"></i></a>
+                        </div>
+
+                        {% comment %}
+                            Now make the image details, which is open by default, but should be closed if nojs exists,
+                            since the summary block is hidden
+                        {% endcomment %}
+                        <details id="img-{{ forloop.counter0 }}-description" class="nojs-open">
+                            <summary id="img-{{ forloop.counter0 }}-description-summary" class="summary__img-description">
+                                Image Information
+                            </summary>
+                            <div class="item-details-list">
+                                {% include '_partials/item-detail.html' with label='Description' property_name='description' content=image.description %}
+                                {% include '_partials/item-detail.html' with label='License' property_name='license' content=image.license %}
+                            </div>
+                        </details>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+
+
+
