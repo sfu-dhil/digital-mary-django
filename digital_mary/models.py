@@ -83,8 +83,9 @@ class Location(AbstractTerm):
 
     # relationships
 
-    # one-to-many fondspot_items via Item Model
     # one-to-many provenance_items via Item Model
+    # one-to-many provenience_items via Item Model
+    # one-to-many fondspot_items via Item Model
 
     class Meta:
         indexes = [
@@ -169,10 +170,11 @@ class Item(models.Model):
     latest_creation = models.IntegerField(choices=Periods.choices, null=True, blank=True)
 
     culture_other = models.TextField(null=True, blank=True, verbose_name='culture (unknown)')
-    findspot_other = models.TextField(null=True, blank=True, verbose_name='findspot (unknown)')
     provenance_other = models.TextField(null=True, blank=True, verbose_name='provenance (unknown)')
+    provenience_other = models.TextField(null=True, blank=True, verbose_name='provenience (unknown)')
+    findspot_other = models.TextField(null=True, blank=True, verbose_name='findspot (unknown)')
 
-    i18n = TranslationField(fields=('name', 'description', 'translated_inscription', 'location', 'dimensions', 'interpretations', 'bibliographic_references', 'culture_other', 'findspot_other', 'provenance_other'))
+    i18n = TranslationField(fields=('name', 'description', 'translated_inscription', 'location', 'dimensions', 'interpretations', 'bibliographic_references', 'culture_other', 'findspot_other', 'provenance_other', 'provenience_other'))
 
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -213,18 +215,25 @@ class Item(models.Model):
         blank=True,
         related_name='items',
     )
-    findspot = models.ForeignKey(
-        Location,
-        null=True,
-        blank=True,
-        related_name='fondspot_items',
-        on_delete=models.CASCADE,
-    )
     provenance = models.ForeignKey(
         Location,
         null=True,
         blank=True,
         related_name='provenace_items',
+        on_delete=models.CASCADE,
+    )
+    provenience = models.ForeignKey(
+        Location,
+        null=True,
+        blank=True,
+        related_name='provenience_items',
+        on_delete=models.CASCADE,
+    )
+    findspot = models.ForeignKey(
+        Location,
+        null=True,
+        blank=True,
+        related_name='fondspot_items',
         on_delete=models.CASCADE,
     )
     techniques = models.ManyToManyField(

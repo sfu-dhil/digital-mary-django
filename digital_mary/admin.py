@@ -179,6 +179,8 @@ class ItemAdmin(TabbedLanguageMixin, ModelAdmin):
         'latest_creation',
         'provenance',
         'provenance_other',
+        'provenience',
+        'provenience_other',
         'findspot',
         'findspot_other',
         'dimensions',
@@ -197,12 +199,12 @@ class ItemAdmin(TabbedLanguageMixin, ModelAdmin):
 
     list_filter = [
         'is_public',
-        'categories', 'languages', 'inscription_style', 'cultures', 'provenance',
-        'provenance', 'findspot', 'techniques', 'subjects',
+        'categories', 'languages', 'inscription_style', 'cultures',
+        'provenance', 'provenience', 'findspot', 'techniques', 'subjects',
     ]
     autocomplete_fields = [
-        'categories', 'languages', 'inscription_style', 'cultures', 'provenance',
-        'findspot', 'materials', 'techniques', 'subjects',
+        'categories', 'languages', 'inscription_style', 'cultures',
+        'provenance', 'provenience', 'findspot', 'materials', 'techniques', 'subjects',
     ]
     list_display = ('name', 'is_public', '_display_date', '_image_count', '_display_image')
     list_display_links = ('name', 'is_public', '_display_date', '_display_image')

@@ -65,7 +65,7 @@ class ItemsView(ListView):
             if data['language']:
                 queryset = queryset.filter(languages=data['language'])
             if data['location']:
-                queryset = queryset.filter(Q(findspot=data['location']) | Q(provenance=data['location']))
+                queryset = queryset.filter(Q(findspot=data['location']) | Q(provenance=data['location']) | Q(provenience=data['location']))
             if data['technique']:
                 queryset = queryset.filter(techniques=data['technique'])
             if data['period']:

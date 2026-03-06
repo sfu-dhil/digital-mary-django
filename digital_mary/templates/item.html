@@ -94,6 +94,7 @@
                 <div class="item-details-list">
                     {% include '_partials/item-detail-terms.html' with label='Categories' property_name='category' term_objects=object.categories.all %}
                     {% include '_partials/item-detail-term.html' with label='Provenance' property_name='location' term_object=object.provenance note=object.provenance_other %}
+                    {% include '_partials/item-detail-term.html' with label='Provenience' property_name='location' term_object=object.provenience note=object.provenience_other %}
                     {% include '_partials/item-detail-term.html' with label='Find Spot' property_name='location' term_object=object.findspot note=object.findspot_other %}
                     {% include '_partials/item-detail-terms.html' with label='Materials' property_name='material' term_objects=object.materials.all %}
                     {% include '_partials/item-detail-terms.html' with label='Techniques' property_name='technique' term_objects=object.techniques.all %}
