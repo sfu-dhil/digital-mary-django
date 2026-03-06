@@ -322,6 +322,12 @@ class Image(models.Model):
     license = models.TextField(null=True, blank=True)
 
     i18n = TranslationField(fields=('name', 'description', 'license'))
+    order = models.PositiveIntegerField(
+        default=0,
+        blank=False,
+        null=False,
+        db_index=True,
+    )
 
     # write tracking fields
     created = models.DateTimeField(auto_now_add=True)
@@ -334,6 +340,9 @@ class Image(models.Model):
         on_delete=models.CASCADE,
     )
 
+    class Meta:
+        ordering = ['order']
+
     def __str__(self):
         return self.name
 
@@ -343,6 +352,12 @@ class RemoteImage(models.Model):
     description = models.TextField(null=True, blank=True)
 
     i18n = TranslationField(fields=('name', 'description'))
+    order = models.PositiveIntegerField(
+        default=0,
+        blank=False,
+        null=False,
+        db_index=True,
+    )
 
     # write tracking fields
     created = models.DateTimeField(auto_now_add=True)
@@ -357,6 +372,7 @@ class RemoteImage(models.Model):
 
     class Meta:
         db_table = 'digital_mary_remote_image'
+        ordering = ['order']
 
     def __str__(self):
         return self.name

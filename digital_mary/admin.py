@@ -7,6 +7,7 @@ from tinymce.widgets import TinyMCE
 from modeltrans_tabs.admin import TabbedLanguageMixin
 from django.templatetags.static import static
 from leaflet.admin import LeafletGeoAdmin
+from adminsortable2.admin import SortableStackedInline, SortableAdminBase
 
 from .marc_relators import MarcRelator
 from .widgets import Select2ChoiceArrayWidget, Select2TagArrayWidget
@@ -126,16 +127,16 @@ class ContributionInline(TabularInline):
     def note(self, obj):
         return mark_safe('See the list of <u><a href="https://www.loc.gov/marc/relators/relaterm.html" target="_blank">MARC Relators</a></u> for descriptions of each role')
 
-class ImageInlineAdmin(TabbedLanguageMixin, StackedInline):
+class ImageInlineAdmin(TabbedLanguageMixin, SortableStackedInline):
     fields = [
         ('_thumbnail_image_tag', 'image'),
         'name',
         'is_public',
         'description',
         'license',
+        'order',
     ]
     readonly_fields = ['_thumbnail_image_tag']
-    ordering = ['id']
     model = Image
     extra = 0
 
@@ -149,9 +150,8 @@ class ImageInlineAdmin(TabbedLanguageMixin, StackedInline):
         return mark_safe(f'<img src="{obj.thumbnail.url}" style="max-width: 100%; max-height: 100px" />') if obj.thumbnail else ''
     _thumbnail_image_tag.short_description = 'Image Preview'
 
-class RemoteImageInlineAdmin(TabbedLanguageMixin, StackedInline):
-    fields = ['url', 'name', 'description']
-    ordering = ['id']
+class RemoteImageInlineAdmin(TabbedLanguageMixin, SortableStackedInline):
+    fields = ['url', 'name', 'description', 'order']
     model = RemoteImage
     extra = 0
 
@@ -162,7 +162,7 @@ class RemoteImageInlineAdmin(TabbedLanguageMixin, StackedInline):
     }
 
 @admin.register(Item)
-class ItemAdmin(TabbedLanguageMixin, ModelAdmin):
+class ItemAdmin(TabbedLanguageMixin, SortableAdminBase, ModelAdmin):
     fields = [
         'name',
         'is_public',
