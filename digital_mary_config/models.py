@@ -11,6 +11,8 @@ class AboutPage(SingletonModel):
 
     # relationships
 
+    # one-to-many team_members via TeamMember Model
+
     # write tracking fields
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -49,8 +51,6 @@ class TeamMember(models.Model):
         related_name='team_members',
         on_delete=models.CASCADE,
     )
-
-    # one-to-many contributions via Contribution Model
 
     # write tracking fields
     created = models.DateTimeField(auto_now_add=True)

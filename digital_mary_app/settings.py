@@ -14,6 +14,7 @@ from pathlib import Path
 from environ import FileAwareEnv
 from dotenv import load_dotenv, find_dotenv
 from django.utils.translation import gettext_lazy as _
+from glob import glob
 import warnings
 
 env = FileAwareEnv()
@@ -63,7 +64,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'django.contrib.gis',
+    'django.contrib.gis',
     'django.contrib.postgres',
     'health_check',
     'django_select2',
@@ -72,6 +73,7 @@ INSTALLED_APPS = [
     'django_vite',
     'django_bootstrap5',
     'django_recaptcha',
+    'leaflet',
 ]
 
 MIDDLEWARE = [
@@ -106,7 +108,7 @@ TEMPLATES = [
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': '/django_cache',
+        'LOCATION': '/django-cache',
     }
 }
 ONE_MINUTE = 60
@@ -125,7 +127,7 @@ WSGI_APPLICATION = 'digital_mary_app.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'HOST': env('DB_HOST', default=''),
         'NAME': env('DB_NAME', default=''),
         'USER': env('DB_USER', default=''),
@@ -242,6 +244,12 @@ TINYMCE_DEFAULT_CONFIG = {
     'quickbars_selection_toolbar': 'bold italic underline strikethrough | fontsize | forecolor | blockquote',
     'contextmenu': 'undo redo | inserttable | cell row column deletetable',
 }
+
+
+# GDAL & GEOS paths
+# (alphine installs it in `/usr/lib/` with a major version number or full version number)
+GDAL_LIBRARY_PATH = glob('/usr/lib/libgdal.so.*')[0]
+GEOS_LIBRARY_PATH = glob('/usr/lib/libgeos_c.so.*')[0]
 
 
 # recaptcha

@@ -2,6 +2,7 @@ from django.db import models
 from django_advance_thumbnail import AdvanceThumbnailField
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.postgres.search import SearchVector, SearchVectorField
+from django.contrib.gis.db.models.fields import MultiPolygonField, PointField
 from django.contrib.postgres.indexes import GinIndex
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
@@ -73,10 +74,8 @@ class Location(AbstractTerm):
     alternate_names = ArrayField(
         models.CharField(), default=list, blank=True
     )
-    geonameid = models.IntegerField(null=True, blank=True)
-    latitude = models.FloatField(null=True, blank=True)
-    longitude = models.FloatField(null=True, blank=True)
     country = models.CharField(null=True, blank=True)
+    geom_point = PointField(verbose_name='Geo Point', geography=True, null=True, blank=True)
 
     i18n_field_params = {
         'fields': ('label', 'description'),

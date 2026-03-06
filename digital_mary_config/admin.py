@@ -5,7 +5,7 @@ from solo.admin import SingletonModelAdmin
 from django.contrib.admin import ModelAdmin
 from tinymce.widgets import TinyMCE
 from adminsortable2.admin import SortableTabularInline, SortableAdminBase
-from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.utils.translation import gettext as _
 from django.utils.encoding import force_str
 from django.contrib import messages
@@ -43,7 +43,7 @@ class AboutPageAdmin(SortableAdminBase, SingletonModelAdmin):
         TeamMemberInline,
     ]
 
-    # Fix user message success vs info 
+    # Fix user message success vs info
     def response_change(self, request, obj):
         msg = _("{obj} was changed successfully.").format(obj=force_str(obj))
         if "_continue" in request.POST:

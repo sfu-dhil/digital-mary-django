@@ -6,6 +6,7 @@ from django.contrib.admin import ModelAdmin, TabularInline, StackedInline
 from tinymce.widgets import TinyMCE
 from modeltrans_tabs.admin import TabbedLanguageMixin
 from django.templatetags.static import static
+from leaflet.admin import LeafletGeoAdmin
 
 from .marc_relators import MarcRelator
 from .widgets import Select2ChoiceArrayWidget, Select2TagArrayWidget
@@ -54,12 +55,21 @@ class LanguageAdmin(AbstractTermModelDefaults):
     pass
 
 @admin.register(Location)
-class LocationAdmin(AbstractTermModelDefaults):
+class LocationAdmin(AbstractTermModelDefaults, LeafletGeoAdmin):
+    # LeafletGeoAdmin
+    settings_overrides = {
+        'RESET_VIEW': False,
+    }
+    display_raw = True
+
     list_display = ['label', 'country', '_description']
     search_fields = ['label', 'country', 'description']
     ordering = ['label']
 
     formfield_overrides = {
+        models.TextField: {
+            "widget": TinyMCE,
+        },
         ArrayField: {
             'widget': Select2TagArrayWidget(attrs={'data-placeholder': 'Click to add one or more alternate names'}),
         },
@@ -72,6 +82,9 @@ class MaterialAdmin(AbstractTermModelDefaults):
 @admin.register(Subject)
 class SubjectAdmin(AbstractTermModelDefaults):
     formfield_overrides = {
+        models.TextField: {
+            "widget": TinyMCE,
+        },
         ArrayField: {
             'widget': Select2TagArrayWidget(attrs={'data-placeholder': 'Click to add one or more alternate names'}),
         },
@@ -99,6 +112,9 @@ class ContributionInline(TabularInline):
     extra = 0
     readonly_fields = ['note']
     formfield_overrides = {
+        models.TextField: {
+            "widget": TinyMCE,
+        },
         ArrayField: {
             'widget': Select2ChoiceArrayWidget(
                 attrs={'data-placeholder': 'Click to select one or more roles'},

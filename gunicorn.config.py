@@ -13,6 +13,7 @@ workers = min(cpu_count(), 4) # don't hog system resources
 errorlog = '-'
 loglevel = 'info' if env.bool('DEBUG', default=False) else 'error'
 capture_output = True
+control_socket_disable = True
 
 # handle dev reloading
 reload = env.bool('GUNICORN_RELOAD', default=False)
@@ -22,4 +23,8 @@ def getDirExtraFiles(dir):
         str(path) for path in list((dir / 'static/').rglob('*.*')) + list((dir / 'templates/').rglob('*.*'))
     ]
 BASE_DIR = Path(__file__).parent
-reload_extra_files = getDirExtraFiles(BASE_DIR / 'digital_mary/') + getDirExtraFiles(BASE_DIR / 'digital_mary_app/') if reload else []
+reload_extra_files = getDirExtraFiles(BASE_DIR / 'digital_mary/') + \
+    getDirExtraFiles(BASE_DIR / 'digital_mary_app/') + \
+    getDirExtraFiles(BASE_DIR / 'digital_mary_challenges/') + \
+    getDirExtraFiles(BASE_DIR / 'digital_mary_config/') \
+    if reload else []

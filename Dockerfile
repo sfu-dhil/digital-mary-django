@@ -25,7 +25,7 @@ WORKDIR /app
 
 # add system deps
 RUN apk update \
-    && apk add git libmagic curl \
+    && apk add git libmagic curl gdal geos \
     && pip install --no-cache-dir --upgrade pip \
     && rm -rf /var/cache/apk/*
 
@@ -38,7 +38,6 @@ COPY . /app
 
 # add prod assets
 COPY --from=digital-mary-vite-prod /app/dist /static-vite/dist
-COPY --from=digital-mary-vite-prod /app/node_modules /app/node_modules
 
 # collect static assets for production
 RUN python manage.py collectstatic --noinput

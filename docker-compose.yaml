@@ -68,8 +68,7 @@ services:
 
       # # persist static outside of container so it can be shared with nginx
       # - .data/static:/app/static # do not mount in development mode
-      # use the container's node_modules folders (don't override with local dev)
-      - /app/node_modules
+      - django-cache:/django-cache
     environment:
       DEBUG: True
       DB_HOST: db
@@ -96,3 +95,6 @@ services:
     image: jcalonso/mailhog:v1.0.1
     ports:
       - "8025:8025"
+
+volumes:
+  django-cache:

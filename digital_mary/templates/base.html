@@ -28,8 +28,6 @@
         </style>
         {% block styles %}
         {% endblock %}
-
-        <script src="{% static 'js/base.js' %}"></script>
     </head>
     <body class="{{ request.resolver_match.url_name }}" data-dm-no-img="{% static 'images/no-img.svg' %}">
         <nav class="navbar navbar-default sticky-top navbar-expand-lg py-0">
