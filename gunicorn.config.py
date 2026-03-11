@@ -7,7 +7,9 @@ env = FileAwareEnv()
 load_dotenv(find_dotenv())
 
 bind = '0.0.0.0:80'
-workers = min(cpu_count(), 4) # don't hog system resources
+workers = min(cpu_count(), 3) # don't hog system resources
+max_requests = 10
+max_requests_jitter = 5
 
 # accesslog = '-' # skip access log (can get from nginx)
 errorlog = '-'

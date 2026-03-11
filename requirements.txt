@@ -1,5 +1,5 @@
 # Django
-Django==6.0.1
+Django==6.0.3
 django-admin-interface==0.32.0
 django-tinymce==5.0.0
 django-advance-thumbnail==1.1.2

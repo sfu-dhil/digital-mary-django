@@ -49,35 +49,35 @@ class ItemsView(ListView):
         if form.is_valid():
             data = form.cleaned_data
 
-            if data['q']:
-                query = reduce(or_, [SearchQuery(data['q'], config=language, search_type='websearch') for language in ['english', 'arabic']])
+            if data.get('q'):
+                query = reduce(or_, [SearchQuery(data.get('q'), config=language, search_type='websearch') for language in ['english', 'arabic']])
                 queryset = queryset \
                     .filter(search_vector=query) \
                     .annotate(rank=SearchRank(F('search_vector'), query) * 100) \
                     .order_by('-rank', *self.get_ordering())
 
-            if data['category']:
-                queryset = queryset.filter(categories=data['category'])
-            if data['culture']:
-                queryset = queryset.filter(cultures=data['culture'])
-            if data['inscription_style']:
-                queryset = queryset.filter(inscription_style=data['inscription_style'])
-            if data['language']:
-                queryset = queryset.filter(languages=data['language'])
-            if data['location']:
-                queryset = queryset.filter(Q(findspot=data['location']) | Q(provenance=data['location']) | Q(provenience=data['location']))
-            if data['technique']:
-                queryset = queryset.filter(techniques=data['technique'])
-            if data['period']:
+            if data.get('category'):
+                queryset = queryset.filter(categories=data.get('category'))
+            if data.get('culture'):
+                queryset = queryset.filter(cultures=data.get('culture'))
+            if data.get('inscription_style'):
+                queryset = queryset.filter(inscription_style=data.get('inscription_style'))
+            if data.get('language'):
+                queryset = queryset.filter(languages=data.get('language'))
+            if data.get('location'):
+                queryset = queryset.filter(Q(findspot=data.get('location')) | Q(provenance=data.get('location')) | Q(provenience=data.get('location')))
+            if data.get('technique'):
+                queryset = queryset.filter(techniques=data.get('technique'))
+            if data.get('period'):
                 queryset = queryset.filter(
-                    (Q(earliest_creation__lte=data['period']) | Q(earliest_creation__isnull=True)) &
-                    (Q(latest_creation__gte=data['period']) | Q(latest_creation__isnull=True)) &
+                    (Q(earliest_creation__lte=data.get('period')) | Q(earliest_creation__isnull=True)) &
+                    (Q(latest_creation__gte=data.get('period')) | Q(latest_creation__isnull=True)) &
                     ~(Q(earliest_creation__isnull=True) | Q(latest_creation__isnull=True))
                 )
-            if data['material']:
-                queryset = queryset.filter(materials=data['material'])
-            if data['subject']:
-                queryset = queryset.filter(subjects=data['subject'])
+            if data.get('material'):
+                queryset = queryset.filter(materials=data.get('material'))
+            if data.get('subject'):
+                queryset = queryset.filter(subjects=data.get('subject'))
 
         return queryset
 
