@@ -80,7 +80,7 @@ services:
       EMAIL_CHALLENGE_RECIPIENTS: email_challenge_recipient@test.com
       MEDIA_FOLDER_UID: 101
       MEDIA_FOLDER_GID: 101
-      GUNICORN_RELOAD: True
+      GUNICORN_CMD_ARGS: --reload --workers=3 --log-level info
     healthcheck:
       test: curl --fail http://localhost/health_check/ || exit 1
       interval: 2s

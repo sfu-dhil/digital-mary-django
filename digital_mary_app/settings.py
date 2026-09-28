@@ -239,9 +239,9 @@ TINYMCE_DEFAULT_CONFIG = {
     'branding': False,
     'menubar': False,
     'plugins': 'autolink, code, link, anchor, lists, table, quickbars, wordcount, pagebreak, nonbreaking',
-    'toolbar': 'undo redo | numlist bullist | fontsize | alignleft aligncenter alignright | link anchor | hr | removeformat',
+    'toolbar': 'undo redo | numlist bullist | styles | fontsize | alignleft aligncenter alignright | link anchor | hr | removeformat',
     'quickbars_insert_toolbar': False,
-    'quickbars_selection_toolbar': 'bold italic underline strikethrough | fontsize | forecolor | blockquote',
+    'quickbars_selection_toolbar': 'bold italic underline strikethrough | styles | fontsize | forecolor | blockquote',
     'contextmenu': 'undo redo | inserttable | cell row column deletetable',
 }
 
