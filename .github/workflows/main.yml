@@ -1,0 +1,37 @@
+name: Tagged Deploy
+
+# based on:
+# - https://docs.docker.com/build/ci/github-actions/github-builder/build/
+# - https://github.com/docker/github-builder
+
+on:
+  push:
+    tags:
+    - 'v*'
+
+jobs:
+  build:
+    uses: docker/github-builder/.github/workflows/build.yml@v1
+    permissions:
+      contents: read
+      id-token: write
+      packages: write
+    with:
+      output: image
+      push: true
+      # platforms: linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/arm64/v8
+      platforms: linux/amd64,linux/arm64,linux/arm64/v8
+      cache: true
+      meta-images: ghcr.io/${{ github.repository }}
+      set-meta-labels: true
+      # BUILDKIT_CONTEXT_KEEP_GIT_DIR keeps the git dur for repo version string building
+      build-args: |
+        BUILDKIT_CONTEXT_KEEP_GIT_DIR=1
+    secrets:
+      registry-auths: |
+        - registry: docker.io
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+        - registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}

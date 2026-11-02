@@ -16,6 +16,14 @@
 Frontend will be available at `http://localhost:8080/`
 Admin Interface will be available at `http://localhost:8080/admin/`
 
+### Import existing db
+
+    docker cp digital_mary.sql digital_mary_db:/digital_mary.sql
+    docker exec -it digital_mary_db bash
+
+        psql -U digital_mary -X digital_mary < /digital_mary.sql
+        exit
+
 ### Install/Switch the admin theme
 
     # Bootstrap

@@ -217,6 +217,16 @@ class ItemAdmin(TabbedLanguageMixin, SortableAdminBase, ModelAdmin):
         },
     }
 
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        if db_field.name == 'latest_creation':
+            # modify empty label for latest creation
+            choices = list(kwargs.get("choices", db_field.choices))
+            from pprint import pprint
+            pprint(choices)
+            choices[0] = (None, f'Blank/{Item.Periods.__empty__}')
+            kwargs["choices"] = choices
+        return super().formfield_for_dbfield(db_field, **kwargs)
+
     def get_queryset(self, request):
         return super().get_queryset(request).prefetch_related('images', 'remote_images')
 

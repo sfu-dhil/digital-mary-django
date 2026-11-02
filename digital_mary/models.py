@@ -272,7 +272,7 @@ class Item(models.Model):
 
     def get_display_periods(self):
         if self.earliest_creation and self.latest_creation:
-            return f'{self.Periods(self.earliest_creation).label} - {self.Periods(self.latest_creation).label}'
+            return self.Periods(self.earliest_creation).label if self.Periods(self.earliest_creation) == self.Periods(self.latest_creation) else f'{self.Periods(self.earliest_creation).label} - {self.Periods(self.latest_creation).label}'
         elif self.earliest_creation:
             return self.Periods(self.earliest_creation).label
         elif self.latest_creation:
