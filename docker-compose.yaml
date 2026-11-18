@@ -19,7 +19,7 @@ services:
 
   nginx:
     container_name: digital_mary_nginx
-    image: nginx:1.29-alpine
+    image: nginx:1.31-alpine
     volumes:
       # config
       - ./docker/nginx.conf:/etc/nginx/nginx.conf
